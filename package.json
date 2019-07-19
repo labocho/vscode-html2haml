@@ -1,7 +1,7 @@
 {
 	"name": "html2haml",
 	"displayName": "html2haml",
-	"description": "Run html2haml command with active file",
+	"description": "Run html2haml command to convert HTML to Haml with active file",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.36.0"
@@ -10,13 +10,13 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"onCommand:extension.html2haml"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [{
-			"command": "extension.helloWorld",
-			"title": "Hello World"
+			"command": "extension.html2haml",
+			"title": "Convert HTML to Haml"
 		}]
 	},
 	"scripts": {
@@ -36,5 +36,10 @@
 		"typescript": "^3.3.1",
 		"tslint": "^5.12.1",
 		"vscode-test": "^1.0.0-next.0"
+	},
+	"publisher": "labocho",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/labocho/vscode-html2haml.git"
 	}
 }

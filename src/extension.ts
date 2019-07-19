@@ -1,27 +1,45 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+import { spawnSync } from "child_process";
+import { TextDecoder } from "util";
+
+function html2haml(html: string) {
+	return sh("html2haml", ["--ruby19-attributes"], html);
+}
+
+function sh(cmd: string, args: Array<string>, stdin: string): string | null {
+	const r = spawnSync(cmd, args, { cwd: vscode.workspace.rootPath, input: Buffer.from(stdin), encoding: "buffer" });
+	if (r.status !== 0) {
+		const s = new TextDecoder().decode(r.stderr);
+		vscode.window.showErrorMessage(s);
+		return null;
+	}
+
+	return new TextDecoder().decode(r.stdout);
+}
+
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "html2haml" is now active!');
+	let disposable = vscode.commands.registerCommand('extension.html2haml', () => {
+		const editor = vscode.window.activeTextEditor;
+		if (editor === undefined) { return; }
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
+		const data = editor.document.getText();
+		const haml = html2haml(data);
+		if (haml === null) { return; }
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World!');
+		editor.edit((edit) => {
+			edit.replace(
+				new vscode.Range(editor.document.positionAt(0), editor.document.positionAt(data.length)),
+				haml,
+			);
+			vscode.window.setStatusBarMessage("html2haml done.", 2000);
+		});
+
+		vscode.languages.setTextDocumentLanguage(editor.document, "haml");
 	});
 
 	context.subscriptions.push(disposable);
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {}
