@@ -8,6 +8,10 @@ This extension adds `Convert HTML to Haml (extension.html2haml)` command to run 
 
 ## Release Notes
 
+### 0.0.2
+
+* Use html2haml's `--erb` option
+
 ### 0.0.1
 
-Initial release.
+* Initial release.

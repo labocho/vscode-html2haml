@@ -2,7 +2,7 @@
 	"name": "html2haml",
 	"displayName": "html2haml",
 	"description": "Run html2haml command to convert HTML to Haml with active file",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.36.0"
 	},
